@@ -8,7 +8,6 @@ public class Cage_Collider : MonoBehaviour
         if (other.tag == "Food")
         {
             Destroy(other.gameObject);
-            Debug.Log(other.name);
         }
     }
 }
