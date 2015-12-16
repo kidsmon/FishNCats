@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System;
 using Facebook.Unity;
-using System.Collections;
 using System.Collections.Generic;
 
 public class FBholder : MonoBehaviour
