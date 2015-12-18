@@ -10,6 +10,8 @@ public class FBholder : MonoBehaviour
 	public GameObject UIFBAvatar;
 	public GameObject UIFBUserName;
 	public Text DebugText;
+	private AccessToken aToken;
+	public GameObject go;
 
 	private Dictionary<string, string> profile = null;
 
@@ -24,6 +26,12 @@ public class FBholder : MonoBehaviour
 			FB.ActivateApp();
 		}
 
+	}
+
+	void Start()
+	{
+		go = new GameObject("ClientSocket");
+		go.AddComponent<ClientSocket>();
 	}
 
 	private void SetInit()
@@ -57,7 +65,7 @@ public class FBholder : MonoBehaviour
 	public void FBlogin()
 	{
 		List<string> perms = new List<string>() { "public_profile", "email", "user_friends"};
-		FB.LogInWithReadPermissions(perms, AuthCallback);
+		FB.LogInWithReadPermissions(perms, LoginCallback);
 
 	}
 
@@ -67,14 +75,14 @@ public class FBholder : MonoBehaviour
 		DealWithFBMenus(false);
 	}
 
-	private void AuthCallback(ILoginResult result)
+	private void LoginCallback(ILoginResult result)
 	{
 		if(FB.IsLoggedIn)
 		{
 			//Debug.Log("FB login worked!");
 			DealWithFBMenus(true);
-			AccessToken aToken = AccessToken.CurrentAccessToken;
-			//Debug.Log(aToken.UserId);
+			aToken = AccessToken.CurrentAccessToken;
+			Debug.Log(aToken.UserId);
 
 			foreach(string perm in aToken.Permissions)
 			{

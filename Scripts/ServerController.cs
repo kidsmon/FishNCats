@@ -6,7 +6,8 @@ using System.Net.Sockets;
 using System.Text;
 using System;
 
-public class ServerController : MonoBehaviour {
+public class ServerController : MonoBehaviour
+{
 
     private const string HostName = "52.69.229.4";
     private const int HostPort = 8107;
