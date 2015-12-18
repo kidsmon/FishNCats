@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ClientSocket : MonoBehaviour {
+public class ClientSocket : MonoBehaviour
+{
 
 	
 	private ClientSocket _instance;
