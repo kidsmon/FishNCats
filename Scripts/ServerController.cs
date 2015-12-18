@@ -20,25 +20,25 @@ public class ServerController : MonoBehaviour
     public NetworkStream NS;
     //NetworkStream객체를 이용해 Socket객체의 기능을 확대한다.
 
-    private static ServerController _instace;
-    //private static GameObject container;
+    private static ServerController _instance;
+    private static GameObject container;
 
     private static ReadHandler readHandlerInstance;
     public static ServerController getInstance()
     {
-        if (_instace == null)
+        if (!_instance)
         {
-            _instace = new ServerController();
+            container = new GameObject("ServerController");
+            _instance = container.AddComponent<ServerController>();
+            _instance.setupServerController();
+         //   _instance = container.AddComponent(typeof(ServerController)) as ServerController;
+
         }
-        return _instace;
+        return _instance;
 
     }
 
     private ServerController()
-    {
-
-    }
-    public void initServerController()
     {
 
     }

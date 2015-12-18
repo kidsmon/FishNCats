@@ -30,8 +30,7 @@ public class ReadHandler : MonoBehaviour {
     {
         if (!_instance)
         {
-            container = new GameObject();
-            container.name = "ReadHandler";
+            container = new GameObject("ReadHandler");
             _instance = container.AddComponent<ReadHandler>() ;
         }
 
@@ -207,7 +206,7 @@ public class ReadHandler : MonoBehaviour {
         byte[] handledbyte = new byte[ByteRead];
         int ind = pre_parser(data, ByteRead, handledbyte);
         receiver(handledbyte);
-
+        //Debug.Log(Encoding.Default.GetString(handledbyte));
     }
     
 

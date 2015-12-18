@@ -11,12 +11,14 @@ public class FBholder : MonoBehaviour
 	public GameObject UIFBUserName;
 	public Text DebugText;
 	private AccessToken aToken;
-	public GameObject go;
+	private GameObject go;
+	private ClientSocket cs;
 
 	private Dictionary<string, string> profile = null;
 
 	void Awake ()
 	{
+		cs.initClientSocket();
 		if (!FB.IsInitialized)
 		{
 			FB.Init(SetInit, OnHideUnity);
@@ -29,9 +31,11 @@ public class FBholder : MonoBehaviour
 	}
 
 	void Start()
-	{
+	{   
+		////////
 		go = new GameObject("ClientSocket");
-		go.AddComponent<ClientSocket>();
+		cs = go.AddComponent<ClientSocket>();
+		//ClientSocket을 GameObject에 포함
 	}
 
 	private void SetInit()
@@ -81,10 +85,13 @@ public class FBholder : MonoBehaviour
 		{
 			//Debug.Log("FB login worked!");
 			DealWithFBMenus(true);
+		   
+			//////////////
 			aToken = AccessToken.CurrentAccessToken;
-			Debug.Log(aToken.UserId);
+			cs.sendtest(aToken.UserId);
+			//로그인 후 아이디 서버로 전송하는 부분
 
-			foreach(string perm in aToken.Permissions)
+			foreach (string perm in aToken.Permissions)
 			{
 				Debug.Log(perm);
 			}

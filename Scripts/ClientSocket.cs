@@ -4,16 +4,16 @@ using System.Collections;
 public class ClientSocket : MonoBehaviour {
 
 	
-	public ClientSocket _instance;
-	public ServerController sc;
-	public ReadHandler rh;
-	public WriteHandler wh;
+	private ClientSocket _instance;
+	private ServerController sc;
+	private ReadHandler rh;
+	private WriteHandler wh;
 
 
 
 	// Use this for initialization
 	void Start () {
-	
+		
 	}
 	
 	// Update is called once per frame
@@ -27,6 +27,7 @@ public class ClientSocket : MonoBehaviour {
 		if(!_instance)
 		{
 			_instance = new ClientSocket();
+			
 		}
 
 		return _instance;
@@ -36,7 +37,12 @@ public class ClientSocket : MonoBehaviour {
 	{
 		sc = ServerController.getInstance();
 		rh = ReadHandler.getInstance();
-	   
+		wh = WriteHandler.getInstance();
+	}
+
+	public void sendtest(string writestring)
+	{
+		wh.sendstring(writestring);
 	}
 
 }
