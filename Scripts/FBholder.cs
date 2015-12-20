@@ -5,20 +5,23 @@ using System.Collections.Generic;
 
 public class FBholder : MonoBehaviour
 {
-	public GameObject UIFBIsLoggedIn;
-	public GameObject UIFBNotLoggedIn;
-	public GameObject UIFBAvatar;
-	public GameObject UIFBUserName;
-	public Text DebugText;
-	private AccessToken aToken;
-	private GameObject go;
+	public GameObject    UIFBIsLoggedIn;
+	public GameObject    UIFBNotLoggedIn;
+	public GameObject    UIFBAvatar;
+	public GameObject    UIFBUserName;
+	public GameObject    UICreateNickName;
+	public Text          InputField;
+	public Text          DebugText;
+	private AccessToken  aToken;
+	private GameObject   go;
 	private ClientSocket cs;
+	private bool         HaveNickname = false;
 
 	private Dictionary<string, string> profile = null;
 
 	void Awake ()
 	{
-		cs.initClientSocket();
+		//cs.initClientSocket();
 		if (!FB.IsInitialized)
 		{
 			FB.Init(SetInit, OnHideUnity);
@@ -31,8 +34,7 @@ public class FBholder : MonoBehaviour
 	}
 
 	void Start()
-	{   
-		////////
+	{  
 		go = new GameObject("ClientSocket");
 		cs = go.AddComponent<ClientSocket>();
 		//ClientSocket을 GameObject에 포함
@@ -66,6 +68,8 @@ public class FBholder : MonoBehaviour
 		}
 	}
 
+	// === public 함수(Inspector 노출) =========================
+
 	public void FBlogin()
 	{
 		List<string> perms = new List<string>() { "public_profile", "email", "user_friends"};
@@ -79,16 +83,33 @@ public class FBholder : MonoBehaviour
 		DealWithFBMenus(false);
 	}
 
+	public void SendNickName()
+	{
+		string nickname = InputField.text;
+		cs.sendtest(nickname);
+		UICreateNickName.SetActive(false);
+		DealWithFBMenus(true);
+	}
+  
+	// === prviate 함수 =======================================
 	private void LoginCallback(ILoginResult result)
 	{
 		if(FB.IsLoggedIn)
 		{
 			//Debug.Log("FB login worked!");
-			DealWithFBMenus(true);
+			if (!HaveNickname)
+			{
+				UICreateNickName.SetActive(true);
+				UIFBNotLoggedIn.SetActive(false);
+			}
+			else
+			{
+				DealWithFBMenus(true);
+			}
 		   
 			//////////////
 			aToken = AccessToken.CurrentAccessToken;
-			cs.sendtest(aToken.UserId);
+			//cs.sendtest(aToken.UserId);
 			//로그인 후 아이디 서버로 전송하는 부분
 
 			foreach (string perm in aToken.Permissions)
@@ -103,7 +124,7 @@ public class FBholder : MonoBehaviour
 		}
 	}
 
-	void DealWithFBMenus(bool isLoggedIn)
+	private void DealWithFBMenus(bool isLoggedIn)
 	{
 		if(isLoggedIn)
 		{
@@ -123,7 +144,7 @@ public class FBholder : MonoBehaviour
 		}
 	}
 
-	void DealWithProfilePicture(IGraphResult result)
+	private void DealWithProfilePicture(IGraphResult result)
 	{
 		if(result.Error != null)
 		{
@@ -137,7 +158,7 @@ public class FBholder : MonoBehaviour
 		UserAvatar.sprite = Sprite.Create(result.Texture, new Rect(0, 0, 128, 128), new Vector2(0, 0));
 	}
 
-	void DealWithUserName(IGraphResult result)
+	private void DealWithUserName(IGraphResult result)
 	{
 		if (result.Error != null)
 		{
