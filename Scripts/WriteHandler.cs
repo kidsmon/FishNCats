@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using LitJson;
 
 class WriteHandler : MonoBehaviour
 {
@@ -26,13 +27,23 @@ class WriteHandler : MonoBehaviour
 
     }
 
-    public void sendData(string MessageJSON)
+    public void sendData(RequestMessage MessageJSON)
     {
-        byte[] sendByte = Encoding.ASCII.GetBytes(MessageJSON);
-        ServerController.getInstance().NS.Write(sendByte, 0, sendByte.Length);
-        //Console.WriteLine("sendData");
-    }
+        switch (MessageJSON.Mtype)
+        {
+            case "LoginInfoRead":
 
+                string sendJSON = JsonMapper.ToJson(MessageJSON);
+                byte[] sendByte = Encoding.ASCII.GetBytes(sendJSON);
+                ServerController.getInstance().NS.Write(sendByte, 0, sendByte.Length);
+                break;
+
+            case "JoinIDWrite":
+
+                break;
+        }
+    }
+    /*
     public void sendstring(string sendS)
     {
         //string 테스트 전송
@@ -40,7 +51,7 @@ class WriteHandler : MonoBehaviour
         ServerController.getInstance().NS.Write(sendByte, 0, sendByte.Length);
         //Console.WriteLine("sendstring");
         Debug.Log("testtring");
-    }
+    }*/
 
 }
 

@@ -22,7 +22,6 @@ public class ClientSocket : MonoBehaviour
 	
 	}
 
-
 	public ClientSocket getInstance()
 	{
 		if(!_instance)
@@ -41,9 +40,11 @@ public class ClientSocket : MonoBehaviour
 		wh = WriteHandler.getInstance();
 	}
 
-	public void sendtest(string writestring)
+	public void sendData(RequestMessage Message)
 	{
-		wh.sendstring(writestring);
+		Debug.Log(Message.Mtype);
+		Debug.Log(Message.FacebookID);
+		wh.sendData(Message);
 	}
 
 }

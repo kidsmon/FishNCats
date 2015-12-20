@@ -112,9 +112,18 @@ public class ReadHandler : MonoBehaviour {
 
                 break;
             case "LoginInfoRead":
-                CLoginInfo LoginInfo = JsonMapper.ToObject<CLoginInfo>(PreHM.DataJSON);
-                Console.WriteLine(LoginInfo.UserID);
-
+                if (PreHM.DataJSON == null)
+                {
+                    CLoginInfo LoginInfo = JsonMapper.ToObject<CLoginInfo>(PreHM.DataJSON);
+                    Debug.Log("not joined");
+                }
+                else
+                {
+                    Debug.Log(PreHM.DataJSON);
+                    CLoginInfo LoginInfo = JsonMapper.ToObject<CLoginInfo>(PreHM.DataJSON);
+                
+                }
+                
                 break;
                 /*
             case "";

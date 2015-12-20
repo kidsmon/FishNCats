@@ -21,7 +21,7 @@ public class FBholder : MonoBehaviour
 
 	void Awake ()
 	{
-		//cs.initClientSocket();
+		
 		if (!FB.IsInitialized)
 		{
 			FB.Init(SetInit, OnHideUnity);
@@ -37,6 +37,7 @@ public class FBholder : MonoBehaviour
 	{  
 		go = new GameObject("ClientSocket");
 		cs = go.AddComponent<ClientSocket>();
+		cs.initClientSocket();
 		//ClientSocket을 GameObject에 포함
 	}
 
@@ -86,7 +87,7 @@ public class FBholder : MonoBehaviour
 	public void SendNickName()
 	{
 		string nickname = InputField.text;
-		cs.sendtest(nickname);
+//		cs.sendtest(nickname);
 		UICreateNickName.SetActive(false);
 		DealWithFBMenus(true);
 	}
@@ -97,19 +98,28 @@ public class FBholder : MonoBehaviour
 		if(FB.IsLoggedIn)
 		{
 			//Debug.Log("FB login worked!");
+			RequestMessage reqMe = new RequestMessage();
+			reqMe.Mtype = "LoginInfoRead";
+			aToken = AccessToken.CurrentAccessToken;
+			reqMe.FacebookID = aToken.UserId;
+			//Debug.Log(reqMe.FacebookID);
+			//Debug.Log(aToken.UserId);
+			cs.sendData(reqMe);
+
+
 			if (!HaveNickname)
-			{
+			{//가입이 필요
 				UICreateNickName.SetActive(true);
 				UIFBNotLoggedIn.SetActive(false);
 			}
 			else
-			{
+			{//이미 가입된상태 게임에 필요한 정보 불러오기
 				DealWithFBMenus(true);
 			}
 		   
 			//////////////
-			aToken = AccessToken.CurrentAccessToken;
-			//cs.sendtest(aToken.UserId);
+			
+			
 			//로그인 후 아이디 서버로 전송하는 부분
 
 			foreach (string perm in aToken.Permissions)
