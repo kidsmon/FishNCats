@@ -21,7 +21,7 @@ public class FBholder : MonoBehaviour
 
 	void Awake ()
 	{
-		//cs.initClientSocket();
+		cs.initClientSocket();
 		if (!FB.IsInitialized)
 		{
 			FB.Init(SetInit, OnHideUnity);
@@ -109,7 +109,7 @@ public class FBholder : MonoBehaviour
 		   
 			//////////////
 			aToken = AccessToken.CurrentAccessToken;
-			//cs.sendtest(aToken.UserId);
+			cs.sendtest(aToken.UserId);
 			//로그인 후 아이디 서버로 전송하는 부분
 
 			foreach (string perm in aToken.Permissions)
