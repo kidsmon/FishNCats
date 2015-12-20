@@ -8,6 +8,5 @@ using System;
 
 public class RequestMessage{
     public string Mtype { get; set; }
-    public string UserID { get; set; }
     public string FacebookID { get; set; }
 }
