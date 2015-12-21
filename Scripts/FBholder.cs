@@ -127,11 +127,7 @@ public class FBholder : MonoBehaviour
 		   
 			//////////////
 
-			aToken = AccessToken.CurrentAccessToken;
-			cs.sendtest(aToken.UserId);
-
-			
-			
+			aToken = AccessToken.CurrentAccessToken;		
 			//로그인 후 아이디 서버로 전송하는 부분
 
 			foreach (string perm in aToken.Permissions)
