@@ -3,31 +3,22 @@ using System.Collections;
 
 public class ClientSocket : MonoBehaviour
 {
+	private static GameObject container;
+	private static ClientSocket _instance;
+	private static ServerController scinstance;
+	private static ReadHandler rhinstance;
+	private static WriteHandler whinstance;
+	private static InGameData IGinstance;
 
-	
-	private ClientSocket _instance;
-	private ServerController sc;
-	private ReadHandler rh;
-	private WriteHandler wh;
 
 
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-	public ClientSocket getInstance()
+	public static ClientSocket getInstance()
 	{
 		if(!_instance)
 		{
-			_instance = new ClientSocket();
-			
+			container = new GameObject("ClientSocket");
+			_instance = container.AddComponent<ClientSocket>();
+
 		}
 
 		return _instance;
@@ -35,16 +26,30 @@ public class ClientSocket : MonoBehaviour
 
 	public void initClientSocket()
 	{
-		sc = ServerController.getInstance();
-		rh = ReadHandler.getInstance();
-		wh = WriteHandler.getInstance();
+		scinstance = ServerController.getInstance();
+		DontDestroyOnLoad(scinstance);
+		rhinstance = ReadHandler.getInstance();
+		DontDestroyOnLoad(rhinstance);
+		whinstance = WriteHandler.getInstance();
+		DontDestroyOnLoad(whinstance);
+		IGinstance = InGameData.getInstance();
+		DontDestroyOnLoad(IGinstance);
 	}
 
 	public void sendData(RequestMessage Message)
 	{
 		Debug.Log(Message.Mtype);
 		Debug.Log(Message.FacebookID);
-		wh.sendData(Message);
+		whinstance.sendData(Message);
 	}
-
+	public void sendData(LoginReqMessage Message)
+	{
+		Debug.Log(Message.Mtype);
+		Debug.Log(Message.FacebookID);
+		whinstance.sendData(Message);
+	}
+	public void inputData(CLoginInfo CL)
+	{
+		IGinstance.inputData(CL);
+	}
 }
