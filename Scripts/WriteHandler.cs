@@ -37,12 +37,26 @@ class WriteHandler : MonoBehaviour
                 byte[] sendByte = Encoding.ASCII.GetBytes(sendJSON);
                 ServerController.getInstance().NS.Write(sendByte, 0, sendByte.Length);
                 break;
-
+/*
             case "JoinIDWrite":
 
-                break;
+                break;*/
         }
     }
+    public void sendData(LoginReqMessage MessageJSON)
+    {
+        switch (MessageJSON.Mtype)
+        {
+            case "JoinIDWrite":
+
+                string sendJSON = JsonMapper.ToJson(MessageJSON);
+                byte[] sendByte = Encoding.ASCII.GetBytes(sendJSON);
+                ServerController.getInstance().NS.Write(sendByte, 0, sendByte.Length);
+                break;
+
+        }
+    }
+
     /*
     public void sendstring(string sendS)
     {

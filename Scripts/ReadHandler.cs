@@ -24,7 +24,8 @@ public class ReadHandler : MonoBehaviour {
     public delegate void DelegateReceiver(byte[] data);
     public DelegateReceiver receiver;
 
-
+    public static ClientSocket CSinstance;
+ 
 
     public static ReadHandler getInstance()
     {
@@ -44,7 +45,9 @@ public class ReadHandler : MonoBehaviour {
 
 
     public void initReadHandler()
-    {   
+    {
+        CSinstance = ClientSocket.getInstance();
+        DontDestroyOnLoad(CSinstance);
         //!!
         //데이터 관리 인스턴스 생성필요
         ServerController.getInstance().NS.BeginRead(readBuffer, 0,
@@ -104,12 +107,14 @@ public class ReadHandler : MonoBehaviour {
         //Console.WriteLine(PreHM.DataJSON);
         //처음에 DataJSON을 스트링으로 저장하고 Mtype에 따라 다른 작업을 수행
 
+        
+
         switch (PreHM.Mtype)
         {
             case "JoinIDWrite":
                 CLoginInfo LoginInfod = JsonMapper.ToObject<CLoginInfo>(PreHM.DataJSON);
                 Console.WriteLine(LoginInfod.UserID);
-
+                
                 break;
             case "LoginInfoRead":
                 if (PreHM.DataJSON == null)
@@ -121,6 +126,7 @@ public class ReadHandler : MonoBehaviour {
                 {
                     Debug.Log(PreHM.DataJSON);
                     CLoginInfo LoginInfo = JsonMapper.ToObject<CLoginInfo>(PreHM.DataJSON);
+                    
                 
                 }
                 

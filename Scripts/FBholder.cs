@@ -87,7 +87,13 @@ public class FBholder : MonoBehaviour
 	public void SendNickName()
 	{
 		string nickname = InputField.text;
-//		cs.sendtest(nickname);
+		
+		LoginReqMessage Lrm = new LoginReqMessage();
+		Lrm.Mtype = "JoinIDWrite";
+		Lrm.UserID = nickname;
+		aToken = AccessToken.CurrentAccessToken;
+		Lrm.FacebookID = aToken.UserId;
+		cs.sendData(Lrm);
 		UICreateNickName.SetActive(false);
 		DealWithFBMenus(true);
 	}
@@ -107,6 +113,7 @@ public class FBholder : MonoBehaviour
 			cs.sendData(reqMe);
 
 
+			//Read후 HaveNickname 초기화후 true면 게임정보받아오기, false면 회원가입
 			if (!HaveNickname)
 			{//가입이 필요
 				UICreateNickName.SetActive(true);
@@ -192,4 +199,6 @@ public class FBholder : MonoBehaviour
 		AccessToken aToken = AccessToken.CurrentAccessToken;
 		DebugText.text = aToken.UserId;
 	}
+
+
 }
