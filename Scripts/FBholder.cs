@@ -2,24 +2,32 @@
 using UnityEngine.UI;
 using Facebook.Unity;
 using System.Collections.Generic;
+using System.Collections;
 
 public class FBholder : MonoBehaviour
 {
-	public GameObject    UIFBIsLoggedIn;
-	public GameObject    UIFBNotLoggedIn;
-	public GameObject    UIFBAvatar;
-	public GameObject    UIFBUserName;
-	public GameObject    UICreateNickName;
-	public Text          InputField;
-	public Text          DebugText;
-	private AccessToken  aToken;
-	private GameObject   go;
-	private ClientSocket cs;
-	private bool         HaveNickname = false;
+	// === 외부 파라미터(Inspector 표시) ===================
+	public GameObject UIFBIsLoggedIn;
+	public GameObject UIFBNotLoggedIn;
+	public GameObject UIFBAvatar;
+	public GameObject UIFBUserName;
+	public GameObject UICreateNickName;
+	public Text InputField;
+	public Text DebugText;
 
+
+	// === 캐쉬 =========================================
+
+
+	// === 내부 파라미터 ==================================
+	private AccessToken aToken;
+	private GameObject go;
+	private ClientSocket cs;
+	private bool HaveNickname = false;
 	private Dictionary<string, string> profile = null;
 
-	void Awake ()
+	// === 유니티 기본 지원 함수 ===========================
+	void Awake()
 	{
 
 		cs.initClientSocket();
@@ -35,12 +43,14 @@ public class FBholder : MonoBehaviour
 	}
 
 	void Start()
-	{  
+	{
 		go = new GameObject("ClientSocket");
 		cs = go.AddComponent<ClientSocket>();
 		cs.initClientSocket();
 		//ClientSocket을 GameObject에 포함
 	}
+
+	// === 그외 함수 들 ==================================
 
 	private void SetInit()
 	{
@@ -88,7 +98,7 @@ public class FBholder : MonoBehaviour
 	public void SendNickName()
 	{
 		string nickname = InputField.text;
-//		cs.sendtest(nickname);
+		//cs.sendtest(nickname);
 		UICreateNickName.SetActive(false);
 		DealWithFBMenus(true);
 	}
@@ -101,13 +111,17 @@ public class FBholder : MonoBehaviour
 			//Debug.Log("FB login worked!");
 			RequestMessage reqMe = new RequestMessage();
 			reqMe.Mtype = "LoginInfoRead";
+
 			aToken = AccessToken.CurrentAccessToken;
 			reqMe.FacebookID = aToken.UserId;
 			//Debug.Log(reqMe.FacebookID);
 			//Debug.Log(aToken.UserId);
 			cs.sendData(reqMe);
+			/* 서버로부터 결과를 받는 처리 필요.
 
 
+
+			*/
 			if (!HaveNickname)
 			{//가입이 필요
 				UICreateNickName.SetActive(true);
@@ -118,12 +132,6 @@ public class FBholder : MonoBehaviour
 				DealWithFBMenus(true);
 			}
 		   
-			//////////////
-
-			aToken = AccessToken.CurrentAccessToken;
-			cs.sendtest(aToken.UserId);
-
-			
 			
 			//로그인 후 아이디 서버로 전송하는 부분
 
@@ -196,5 +204,10 @@ public class FBholder : MonoBehaviour
 		DebugText.text = "";
 		AccessToken aToken = AccessToken.CurrentAccessToken;
 		DebugText.text = aToken.UserId;
+	}
+
+	IEnumerator WaitResult()
+	{
+		yield return null;
 	}
 }
