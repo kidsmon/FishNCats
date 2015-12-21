@@ -5,21 +5,28 @@ using System.Collections.Generic;
 
 public class FBholder : MonoBehaviour
 {
-	public GameObject    UIFBIsLoggedIn;
-	public GameObject    UIFBNotLoggedIn;
-	public GameObject    UIFBAvatar;
-	public GameObject    UIFBUserName;
-	public GameObject    UICreateNickName;
-	public Text          InputField;
-	public Text          DebugText;
-	private AccessToken  aToken;
-	private GameObject   go;
-	private ClientSocket cs;
-	private bool         HaveNickname = false;
+	// === 외부 파라미터(Inspector 표시) ===================
+	public GameObject UIFBIsLoggedIn;
+	public GameObject UIFBNotLoggedIn;
+	public GameObject UIFBAvatar;
+	public GameObject UIFBUserName;
+	public GameObject UICreateNickName;
+	public Text InputField;
+	public Text DebugText;
 
+	// === 캐쉬 =========================================
+
+
+	// === 내부 파라미터 ==================================
+	private AccessToken aToken;
+	private GameObject go;
+	private ClientSocket cs;
+	private bool HaveNickname                  = false;
 	private Dictionary<string, string> profile = null;
 
-	void Awake ()
+	// === 유니티 기본 지원 함수 ===========================
+
+	void Awake()
 	{
 
 		cs.initClientSocket();
@@ -35,12 +42,15 @@ public class FBholder : MonoBehaviour
 	}
 
 	void Start()
-	{  
+	{
 		go = new GameObject("ClientSocket");
 		cs = go.AddComponent<ClientSocket>();
 		cs.initClientSocket();
 		//ClientSocket을 GameObject에 포함
 	}
+
+	// === 그외 함수 들 ==================================
+
 
 	private void SetInit()
 	{
